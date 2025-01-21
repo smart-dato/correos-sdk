@@ -10,9 +10,9 @@ use SoapFault;
 class CorreosSdk
 {
     public function __construct(
-        protected string $baseUrl,
-        protected string $username,
-        protected string $password,
+        protected string $baseUrl = '',
+        protected string $username = '',
+        protected string $password = '',
     ) {}
 
     /**
