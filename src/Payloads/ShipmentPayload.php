@@ -16,16 +16,22 @@ class ShipmentPayload implements PayloadContract
         protected ShippingPartyPayload $receiverInfo,
         protected array $parcels,
         protected float $totalWeight,
+        protected string $labelCode,
+        protected string $productCode,
+        protected string $deliveryMode = 'FP',
+        protected string $shippingType = 'ST',
+        protected int $modDevLabel = 2,
+
     ) {}
 
     public function build(): array
     {
         return [
             'FechaOperacion' => $this->date,
-            'CodEtiquetador' => 'XXX1',
+            'CodEtiquetador' => $this->labelCode,
             'Care' => '',
             'TotalBultos' => $this->parcelCount,
-            'ModDevEtiqueta' => 2,
+            'ModDevEtiqueta' => $this->modDevLabel,
             'Remitente' => $this->senderInfo->build(),
             'Destinatario' => $this->receiverInfo->build(),
             'Envios' => array_map(
@@ -33,9 +39,9 @@ class ShipmentPayload implements PayloadContract
                 $this->parcels
             ),
             'PesoTotal' => $this->totalWeight,
-            'CodProducto' => 'S0132',
-            'ModalidadEntrega' => 'ST',
-            'TipoFranqueo' => 'FP',
+            'CodProducto' => $this->productCode,
+            'ModalidadEntrega' => $this->shippingType,
+            'TipoFranqueo' => $this->deliveryMode,
         ];
     }
 }

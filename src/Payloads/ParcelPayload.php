@@ -12,6 +12,7 @@ class ParcelPayload implements PayloadContract
         protected int $length,
         protected int $height,
         protected int $width,
+        protected string $weightType = 'R',
     ) {}
 
     public function build(): array
@@ -20,7 +21,7 @@ class ParcelPayload implements PayloadContract
             'NumBulto' => $this->parcelNumber,
             'Pesos' => [
                 'Peso' => [
-                    'TipoPeso' => 'R',
+                    'TipoPeso' => $this->weightType,
                     'Valor' => $this->weight,
                 ],
             ],
