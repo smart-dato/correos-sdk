@@ -3,7 +3,6 @@
 namespace SmartDato\CorreosSdk\Payloads;
 
 use SmartDato\CorreosSdk\Contracts\PayloadContract;
-use SmartDato\CorreosSdk\Enums\WeightTypeEnum;
 
 class ParcelPayload implements PayloadContract
 {
@@ -13,7 +12,7 @@ class ParcelPayload implements PayloadContract
         protected int $length,
         protected int $height,
         protected int $width,
-        protected WeightTypeEnum $weightType = WeightTypeEnum::REAL,
+        protected string $weightType = 'R',
     ) {}
 
     public function build(): array
@@ -22,7 +21,7 @@ class ParcelPayload implements PayloadContract
             'NumBulto' => $this->parcelNumber,
             'Pesos' => [
                 'Peso' => [
-                    'TipoPeso' => $this->weightType->value,
+                    'TipoPeso' => $this->weightType,
                     'Valor' => $this->weight,
                 ],
             ],
