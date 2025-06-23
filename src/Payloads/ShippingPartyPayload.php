@@ -13,6 +13,7 @@ class ShippingPartyPayload implements PayloadContract
         protected string $phone,
         protected string $email,
         protected ?AddressPayload $address2 = null,
+        protected ?string $country = null,
     ) {}
 
     public function build(): array
@@ -29,6 +30,10 @@ class ShippingPartyPayload implements PayloadContract
 
         if (! empty($this->address2)) {
             $payload['DatosDireccion2'] = $this->address2->build();
+        }
+
+        if (!empty($this->country)) {
+            $payload['Pais'] = $this->country;
         }
 
         return $payload;
