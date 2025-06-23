@@ -2,6 +2,18 @@
 
 All notable changes to `correos-sdk` will be documented in this file.
 
+## 0.0.6 - 2025-03-19
+
+### What's Changed
+
+* Add wsdl file by @nahapet93 in https://github.com/smart-dato/correos-sdk/pull/4
+
+### New Contributors
+
+* @nahapet93 made their first contribution in https://github.com/smart-dato/correos-sdk/pull/4
+
+**Full Changelog**: https://github.com/smart-dato/correos-sdk/compare/0.0.5...0.0.6
+
 ## 0.0.5 - 2025-03-14
 
 ### What's Changed
