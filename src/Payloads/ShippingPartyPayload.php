@@ -32,7 +32,7 @@ class ShippingPartyPayload implements PayloadContract
             $payload['DatosDireccion2'] = $this->address2->build();
         }
 
-        if (!empty($this->country)) {
+        if (! empty($this->country)) {
             $payload['Pais'] = $this->country;
         }
 
