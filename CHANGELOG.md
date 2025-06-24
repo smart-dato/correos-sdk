@@ -2,6 +2,10 @@
 
 All notable changes to `correos-sdk` will be documented in this file.
 
+## 0.0.10 - 2025-06-24
+
+**Full Changelog**: https://github.com/smart-dato/correos-sdk/compare/0.0.9...0.0.10
+
 ## 0.0.9 - 2025-06-24
 
 **Full Changelog**: https://github.com/smart-dato/correos-sdk/compare/0.0.8...0.0.9
