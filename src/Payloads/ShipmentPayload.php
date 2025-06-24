@@ -2,12 +2,14 @@
 
 namespace SmartDato\CorreosSdk\Payloads;
 
+use SmartDato\CorreosSdk\Contracts\AddOnValueContract;
 use SmartDato\CorreosSdk\Contracts\PayloadContract;
 
 class ShipmentPayload implements PayloadContract
 {
     /**
      * @param  ParcelPayload[]  $parcels
+     * @param  AddOnValueContract[]  $addOnValues
      */
     public function __construct(
         protected string $date,
@@ -21,6 +23,7 @@ class ShipmentPayload implements PayloadContract
         protected string $deliveryMode = 'FP',
         protected string $shippingType = 'ST',
         protected int $modDevLabel = 2,
+        protected array $addOnValues = []
 
     ) {}
 
@@ -42,6 +45,10 @@ class ShipmentPayload implements PayloadContract
             'CodProducto' => $this->productCode,
             'ModalidadEntrega' => $this->shippingType,
             'TipoFranqueo' => $this->deliveryMode,
+            'ValoresAnadidos' => array_map(
+                fn (AddOnValueContract $addOnValue) => $addOnValue->build(),
+                $this->addOnValues
+            ),
         ];
     }
 }
