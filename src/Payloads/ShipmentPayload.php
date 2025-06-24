@@ -45,9 +45,10 @@ class ShipmentPayload implements PayloadContract
             'CodProducto' => $this->productCode,
             'ModalidadEntrega' => $this->shippingType,
             'TipoFranqueo' => $this->deliveryMode,
-            'ValoresAnadidos' => array_map(
-                fn (AddOnValueContract $addOnValue) => $addOnValue->build(),
-                $this->addOnValues
+            'ValoresAnadidos' => array_reduce(
+                $this->addOnValues,
+                fn (array $carry, AddOnValueContract $item) => array_merge($carry, $item->build()),
+                []
             ),
         ];
     }
