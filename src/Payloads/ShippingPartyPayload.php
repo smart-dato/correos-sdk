@@ -23,7 +23,7 @@ class ShippingPartyPayload implements PayloadContract
                 'Nombre' => $this->name,
             ],
             'DatosDireccion' => $this->address->build(),
-            'CP' => $this->zipcode,
+            'CP' => str($this->zipcode)->take(5)->value(), // only take first 5 characters
             'ZIP' => $this->zipcode,
             'Telefonocontacto' => $this->phone,
             'Email' => $this->email,
