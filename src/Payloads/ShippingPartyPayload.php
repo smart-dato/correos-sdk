@@ -11,7 +11,7 @@ class ShippingPartyPayload implements PayloadContract
         protected AddressPayload $address,
         protected string $zipcode,
         protected string $phone,
-        protected string $email,
+        protected ?string $email,
         protected ?AddressPayload $address2 = null,
         protected ?string $country = null,
     ) {}
@@ -24,6 +24,7 @@ class ShippingPartyPayload implements PayloadContract
             ],
             'DatosDireccion' => $this->address->build(),
             'CP' => $this->zipcode,
+            'ZIP' => $this->zipcode,
             'Telefonocontacto' => $this->phone,
             'Email' => $this->email,
         ];
