@@ -2,6 +2,14 @@
 
 All notable changes to `correos-sdk` will be documented in this file.
 
+## 0.0.8 - 2025-06-24
+
+### What's Changed
+
+* Bump stefanzweifel/git-auto-commit-action from 5 to 6 by @dependabot in https://github.com/smart-dato/correos-sdk/pull/6
+
+**Full Changelog**: https://github.com/smart-dato/correos-sdk/compare/0.0.7...0.0.8
+
 ## 0.0.6 - 2025-03-19
 
 ### What's Changed
