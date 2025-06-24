@@ -14,6 +14,7 @@ class ShippingPartyPayload implements PayloadContract
         protected ?string $email,
         protected ?AddressPayload $address2 = null,
         protected ?string $country = null,
+        protected bool $useCP = true,
     ) {}
 
     public function build(): array
@@ -23,11 +24,16 @@ class ShippingPartyPayload implements PayloadContract
                 'Nombre' => $this->name,
             ],
             'DatosDireccion' => $this->address->build(),
-            'CP' => str($this->zipcode)->take(5)->value(), // only take first 5 characters
-            'ZIP' => $this->zipcode,
             'Telefonocontacto' => $this->phone,
             'Email' => $this->email,
         ];
+
+        if ($this->useCP) {
+            // only take first 5 characters
+            $payload['CP'] = str($this->zipcode)->take(5)->value();
+        } else {
+            $payload['ZIP'] = $this->zipcode;
+        }
 
         if (! empty($this->address2)) {
             $payload['DatosDireccion2'] = $this->address2->build();
