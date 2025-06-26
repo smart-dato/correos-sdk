@@ -11,8 +11,7 @@ class CashOnDeliveryPayload implements AddOnValueContract
         private string $type = 'RC', // RC = Reembolso, RT = Reembolso con transferencia
         private string $accountNumber = '', // aka IBAN
         private string $groupedTransfer = 'S'
-    ) {
-    }
+    ) {}
 
     public function build(): array
     {
@@ -21,7 +20,7 @@ class CashOnDeliveryPayload implements AddOnValueContract
                 'Importe' => (int) ($this->amount * 100),
                 'TipoReembolso' => $this->type,
                 'NumeroCuenta' => $this->accountNumber,
-                'Transferagrupada' => $this->groupedTransfer
+                'Transferagrupada' => $this->groupedTransfer,
             ],
         ];
     }
