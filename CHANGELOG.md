@@ -2,6 +2,27 @@
 
 All notable changes to `correos-sdk` will be documented in this file.
 
+## 0.1.0 - 2026-09-23
+
+**Breaking:** `ShipmentPayload` now takes `postageType` (`PostageTypeEnum`) and `deliveryMode` (`DeliveryModeEnum`) instead of the swapped string parameters `deliveryMode` / `shippingType`. The facade is now bound to the new `correos-sdk` config (`CORREOS_SDK_BASE_URL`, `CORREOS_SDK_USERNAME`, `CORREOS_SDK_PASSWORD`).
+
+### What's Changed
+
+* Bump stefanzweifel/git-auto-commit-action from 6.0.1 to 7.2.0 by @dependabot[bot] in https://github.com/smart-dato/correos-sdk/pull/17
+* Bump ramsey/composer-install from 3.2.1 to 4.0.0 by @dependabot[bot] in https://github.com/smart-dato/correos-sdk/pull/19
+* Bump actions/checkout from 4.3.1 to 7.0.1 by @dependabot[bot] in https://github.com/smart-dato/correos-sdk/pull/18
+* Bump dependabot/fetch-metadata from 2.5.0 to 3.1.0 by @dependabot[bot] in https://github.com/smart-dato/correos-sdk/pull/15
+* ci: check code style instead of auto-committing it by @michael-tscholl in https://github.com/smart-dato/correos-sdk/pull/21
+* fix(ci): drop the Laravel 10 leg from the test matrix by @michael-tscholl in https://github.com/smart-dato/correos-sdk/pull/20
+* ci: commit the changelog through the API so it is signed by @michael-tscholl in https://github.com/smart-dato/correos-sdk/pull/22
+* docs: update README and fix issues found while documenting by @michael-tscholl in https://github.com/smart-dato/correos-sdk/pull/23
+
+### New Contributors
+
+* @michael-tscholl made their first contribution in https://github.com/smart-dato/correos-sdk/pull/21
+
+**Full Changelog**: https://github.com/smart-dato/correos-sdk/compare/0.0.15...0.1.0
+
 ## 0.0.14 - 2025-06-26
 
 **Full Changelog**: https://github.com/smart-dato/correos-sdk/compare/0.0.13...0.0.14
