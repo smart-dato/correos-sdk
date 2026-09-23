@@ -18,4 +18,13 @@ class CorreosSdkServiceProvider extends PackageServiceProvider
             ->name('correos-sdk')
             ->hasConfigFile();
     }
+
+    public function packageRegistered(): void
+    {
+        $this->app->singleton(CorreosSdk::class, fn (): CorreosSdk => new CorreosSdk(
+            baseUrl: (string) config('correos-sdk.base_url'),
+            username: (string) config('correos-sdk.username'),
+            password: (string) config('correos-sdk.password'),
+        ));
+    }
 }

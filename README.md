@@ -21,21 +21,41 @@ A small Laravel package for pre-registering Correos (Spanish postal service) shi
 composer require smart-dato/correos-sdk
 ```
 
+Publish the config file:
+
+```bash
+php artisan vendor:publish --tag="correos-sdk-config"
+```
+
+```dotenv
+CORREOS_SDK_BASE_URL=https://your-correos-host
+CORREOS_SDK_USERNAME=your-username
+CORREOS_SDK_PASSWORD=your-password
+```
+
+SOAP calls go to `{base_url}/preregistroenvios`.
+
 ## Usage
 
-Instantiate the client with your Correos endpoint and credentials:
+The `CorreosSdk` facade and container binding use the configured credentials:
+
+```php
+use SmartDato\CorreosSdk\Facades\CorreosSdk;
+
+$correos = CorreosSdk::getFacadeRoot();
+```
+
+Or construct the client yourself:
 
 ```php
 use SmartDato\CorreosSdk\CorreosSdk;
 
 $correos = new CorreosSdk(
-    baseUrl: 'https://your-correos-host',   // SOAP calls go to {baseUrl}/preregistroenvios
+    baseUrl: 'https://your-correos-host',
     username: 'your-username',
     password: 'your-password',
 );
 ```
-
-> The package registers a `CorreosSdk` facade and a config file, but the config is currently empty and the facade is not bound to any credentials. Construct the client directly as above.
 
 ### Pre-register a shipment
 
@@ -73,8 +93,8 @@ $result = $correos->createShipment(new ShipmentPayload(
     totalWeight: 1.5,
     labelCode: 'your-labeler-code', // CodEtiquetador, issued by Correos
     productCode: 'your-product-code', // CodProducto
-    deliveryMode: PostageTypeEnum::POSTAGE_PAID->value,
-    shippingType: DeliveryModeEnum::STANDARD->value,
+    postageType: PostageTypeEnum::POSTAGE_PAID,   // TipoFranqueo
+    deliveryMode: DeliveryModeEnum::STANDARD,     // ModalidadEntrega
     modDevLabel: (int) LabelModeEnum::PDF->value,
 ));
 
@@ -86,7 +106,7 @@ $result['response']; // raw SOAP response XML
 
 Values such as the operation date and weights are passed to Correos unchanged — the SDK does not enforce a date format or weight unit, so use whatever your Correos contract specifies.
 
-> **Note on parameter names:** `deliveryMode` is sent as `TipoFranqueo` (postage type — use `PostageTypeEnum`) and `shippingType` is sent as `ModalidadEntrega` (delivery mode — use `DeliveryModeEnum`). The names are the reverse of what they suggest; the defaults (`'FP'` and `'ST'`) are correct.
+`postageType` and `deliveryMode` default to `POSTAGE_PAID` and `STANDARD`.
 
 ### Track a shipment
 
