@@ -4,6 +4,8 @@ namespace SmartDato\CorreosSdk\Payloads;
 
 use SmartDato\CorreosSdk\Contracts\AddOnValueContract;
 use SmartDato\CorreosSdk\Contracts\PayloadContract;
+use SmartDato\CorreosSdk\Enums\DeliveryModeEnum;
+use SmartDato\CorreosSdk\Enums\PostageTypeEnum;
 
 class ShipmentPayload implements PayloadContract
 {
@@ -20,8 +22,8 @@ class ShipmentPayload implements PayloadContract
         protected float $totalWeight,
         protected string $labelCode,
         protected string $productCode,
-        protected string $deliveryMode = 'FP',
-        protected string $shippingType = 'ST',
+        protected PostageTypeEnum $postageType = PostageTypeEnum::POSTAGE_PAID,
+        protected DeliveryModeEnum $deliveryMode = DeliveryModeEnum::STANDARD,
         protected int $modDevLabel = 2,
         protected array $addOnValues = []
 
@@ -43,8 +45,8 @@ class ShipmentPayload implements PayloadContract
             ),
             'PesoTotal' => $this->totalWeight,
             'CodProducto' => $this->productCode,
-            'ModalidadEntrega' => $this->shippingType,
-            'TipoFranqueo' => $this->deliveryMode,
+            'ModalidadEntrega' => $this->deliveryMode->value,
+            'TipoFranqueo' => $this->postageType->value,
             'ValoresAnadidos' => array_merge(
                 [],
                 ...array_map(
