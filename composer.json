@@ -1,6 +1,6 @@
 {
     "name": "smart-dato/correos-sdk",
-    "description": "This is my package correos-sdk",
+    "description": "Correos SOAP pre-registration and tracking SDK for Laravel",
     "keywords": [
         "SmartDato",
         "laravel",
