@@ -2,6 +2,8 @@
 
 namespace SmartDato\CorreosSdk;
 
+use Illuminate\Http\Client\Request;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use SmartDato\CorreosSdk\Payloads\ShipmentPayload;
 use SoapClient;
@@ -9,6 +11,10 @@ use SoapFault;
 
 class CorreosSdk
 {
+    protected ?Request $lastRequest = null;
+
+    protected ?Response $lastResponse = null;
+
     public function __construct(
         protected string $baseUrl = '',
         protected string $username = '',
@@ -41,6 +47,9 @@ class CorreosSdk
 
     public function getTracking(string $shipmentReference): array
     {
+        $this->lastRequest = null;
+        $this->lastResponse = null;
+
         $response = Http::baseUrl($this->baseUrl)
             ->withBasicAuth(
                 $this->username,
@@ -50,8 +59,29 @@ class CorreosSdk
                 'codIdioma' => 'EN',
                 'indUltEvento' => 'N',
             ])
+            ->beforeSending(function (Request $request): void {
+                $this->lastRequest = $request;
+            })
             ->get('/canonico/eventos_envio_servicio_auth/'.$shipmentReference);
 
-        return $response->json();
+        $this->lastResponse = $response;
+
+        return $response->json() ?? [];
+    }
+
+    /**
+     * The HTTP request of the last getTracking() call, also set when the connection failed.
+     */
+    public function lastRequest(): ?Request
+    {
+        return $this->lastRequest;
+    }
+
+    /**
+     * The HTTP response of the last getTracking() call.
+     */
+    public function lastResponse(): ?Response
+    {
+        return $this->lastResponse;
     }
 }
