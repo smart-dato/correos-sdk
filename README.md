@@ -114,7 +114,14 @@ Values such as the operation date and weights are passed to Correos unchanged â€
 $events = $correos->getTracking('your-shipment-code');
 ```
 
-Returns the decoded JSON from Correos's `eventos_envio_servicio_auth` endpoint.
+Returns the decoded JSON from Correos's `eventos_envio_servicio_auth` endpoint, or an empty array when the body is not JSON.
+
+The underlying HTTP exchange of the last call stays available for logging:
+
+```php
+$correos->lastRequest();  // ?Illuminate\Http\Client\Request, also set when the connection failed
+$correos->lastResponse(); // ?Illuminate\Http\Client\Response
+```
 
 ### Enums
 

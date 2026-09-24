@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Http;
 use SmartDato\CorreosSdk\CorreosSdk;
 use SmartDato\CorreosSdk\Enums\DeliveryModeEnum;
 use SmartDato\CorreosSdk\Enums\PostageTypeEnum;
@@ -52,4 +54,36 @@ it('resolves the facade from the config', function () {
     config()->set('correos-sdk.base_url', 'https://correos.example');
 
     expect(CorreosSdkFacade::getFacadeRoot())->toBeInstanceOf(CorreosSdk::class);
+});
+
+it('keeps the last tracking request and response', function () {
+    Http::fake(['*' => Http::response(['eventos' => [['codEvento' => 'A1']]])]);
+
+    $sdk = new CorreosSdk('https://correos.example', 'user', 'secret');
+
+    $events = $sdk->getTracking('PQ123');
+
+    expect($events)->toBe(['eventos' => [['codEvento' => 'A1']]])
+        ->and($sdk->lastRequest()->method())->toBe('GET')
+        ->and($sdk->lastRequest()->url())->toBe('https://correos.example/canonico/eventos_envio_servicio_auth/PQ123?codIdioma=EN&indUltEvento=N')
+        ->and($sdk->lastResponse()->body())->toBe('{"eventos":[{"codEvento":"A1"}]}');
+});
+
+it('returns no events when the tracking response is not json', function () {
+    Http::fake(['*' => Http::response('<html>Unauthorized</html>', 401)]);
+
+    $sdk = new CorreosSdk('https://correos.example', 'user', 'secret');
+
+    expect($sdk->getTracking('PQ123'))->toBe([])
+        ->and($sdk->lastResponse()->status())->toBe(401);
+});
+
+it('keeps the last tracking request when the connection fails', function () {
+    Http::fake(fn () => throw new ConnectionException('timeout'));
+
+    $sdk = new CorreosSdk('https://correos.example', 'user', 'secret');
+
+    expect(fn () => $sdk->getTracking('PQ123'))->toThrow(ConnectionException::class)
+        ->and($sdk->lastRequest()->url())->toContain('/PQ123')
+        ->and($sdk->lastResponse())->toBeNull();
 });
