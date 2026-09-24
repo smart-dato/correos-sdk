@@ -2,6 +2,14 @@
 
 All notable changes to `correos-sdk` will be documented in this file.
 
+## 0.2.0 - 2026-09-24
+
+### What's Changed
+
+* feat: expose the last tracking request and response by @michael-tscholl in https://github.com/smart-dato/correos-sdk/pull/24
+
+**Full Changelog**: https://github.com/smart-dato/correos-sdk/compare/0.1.0...0.2.0
+
 ## 0.1.0 - 2026-09-23
 
 **Breaking:** `ShipmentPayload` now takes `postageType` (`PostageTypeEnum`) and `deliveryMode` (`DeliveryModeEnum`) instead of the swapped string parameters `deliveryMode` / `shippingType`. The facade is now bound to the new `correos-sdk` config (`CORREOS_SDK_BASE_URL`, `CORREOS_SDK_USERNAME`, `CORREOS_SDK_PASSWORD`).
