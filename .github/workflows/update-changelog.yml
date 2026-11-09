@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   update:
@@ -24,24 +25,43 @@ jobs:
           latest-version: ${{ github.event.release.name }}
           release-notes: ${{ github.event.release.body }}
 
-      # Committed through the Contents API rather than `git push`, because
-      # GitHub signs commits it creates itself. A pushed commit would be
-      # unsigned and the signed-commits ruleset would reject it.
-      - name: Commit updated CHANGELOG
+      # The org rulesets require signed commits and a pull request for every
+      # change to main. The commit goes through the Contents API because
+      # GitHub signs commits it creates itself, and the squash merge is
+      # signed by GitHub too.
+      - name: Merge updated CHANGELOG through a pull request
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ github.event.release.tag_name }}
         run: |
           if git diff --quiet -- CHANGELOG.md; then
             echo "CHANGELOG.md is unchanged, nothing to commit."
             exit 0
           fi
 
-          sha=$(gh api "repos/${GITHUB_REPOSITORY}/contents/CHANGELOG.md?ref=main" --jq .sha)
+          branch="changelog/${VERSION}"
+
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+            -f ref="refs/heads/${branch}" \
+            -f sha="$(git rev-parse HEAD)"
+
+          sha=$(gh api "repos/${GITHUB_REPOSITORY}/contents/CHANGELOG.md?ref=${branch}" --jq .sha)
 
           jq -n \
-            --arg message "Update CHANGELOG" \
-            --arg branch main \
+            --arg message "Update CHANGELOG for ${VERSION}" \
+            --arg branch "$branch" \
             --arg sha "$sha" \
             --arg content "$(base64 -w0 CHANGELOG.md)" \
             '{message: $message, branch: $branch, sha: $sha, content: $content}' \
           | gh api --method PUT "repos/${GITHUB_REPOSITORY}/contents/CHANGELOG.md" --input -
+
+          pr_url=$(gh pr create \
+            --repo "$GITHUB_REPOSITORY" \
+            --base main \
+            --head "$branch" \
+            --title "Update CHANGELOG for ${VERSION}" \
+            --body "Adds the release notes of ${VERSION} to CHANGELOG.md.")
+
+          gh pr merge "$pr_url" --repo "$GITHUB_REPOSITORY" --squash
+
+          gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/heads/${branch}"

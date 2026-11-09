@@ -2,6 +2,18 @@
 
 All notable changes to `correos-sdk` will be documented in this file.
 
+## 0.3.0 - 2026-11-09
+
+**Breaking:** requires PHP 8.4+ and Laravel 12+. PHP 8.2/8.3 and Laravel 10/11 are no longer supported.
+
+### What's Changed
+
+* Bump shivammathur/setup-php from 2.37.2 to 2.40.0 by @dependabot[bot] in https://github.com/smart-dato/correos-sdk/pull/25
+* ci: squash-merge Dependabot PRs to satisfy linear history by @michael-tscholl in https://github.com/smart-dato/correos-sdk/pull/26
+* chore!: require PHP 8.4+ and Laravel 12+ by @michael-tscholl in https://github.com/smart-dato/correos-sdk/pull/27
+
+**Full Changelog**: https://github.com/smart-dato/correos-sdk/compare/0.2.0...0.3.0
+
 ## 0.2.0 - 2026-09-24
 
 ### What's Changed
