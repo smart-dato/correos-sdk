@@ -11,8 +11,8 @@ A small Laravel package for pre-registering Correos (Spanish postal service) shi
 
 ## Requirements
 
-- PHP 8.2+
-- Laravel 10 – 13
+- PHP 8.4+
+- Laravel 12 – 13
 - The `soap` PHP extension
 
 ## Installation
